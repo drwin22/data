@@ -1,0 +1,54 @@
+Bdata <- read.csv("https://raw.githubusercontent.com/drwin22/stat/main/Beers.csv", header=TRUE)
+head(Bdata,n=10)
+summary(myData)
+plot(myData$ABV)
+Ldata <- read.csv("https://raw.githubusercontent.com/drwin22/stat/main/LifeExpDataComplete.csv", header=TRUE)
+head(Ldata,n=10)
+summary(Ldata)
+plot(Ldata$LifeExp)
+# Load packages
+library(readr)
+library(dplyr)
+library(ggplot2)
+Ldata %>%
+  mutate(HIV=HIV*1000) %>%
+  filter(Region=="EAP") %>%
+  group_by(Region) %>%
+  summarize(mean(LifeExp), mean(GDP))
+######
+p <-ggplot(Ldata, aes(color=Region,LifeExp,GDP))
+p + aes(color = Region) + geom_point() + geom_smooth(method = loess,formula=y~x,se=FALSE,linewidth=4)
+###formula
+p <-ggplot(Ldata, aes(color=Region,LifeExp,GDP))
+p + aes(color = Region) + geom_point() + geom_smooth(method = lm,formula=y~x,se=FALSE,linewidth=4)
+# Experiment with adding poings
+p + geom_point()
+
+# Experiment with a different scale
+p + geom_point() + scale_x_log10()
+p <- p + scale_x_log10()
+p + geom_point()
+p + geom_point(aes(color=Region))
+p + geom_point(color="blue", pch=17, size=8, alpha=1/4)
+p + geom_point(aes(col=Region, shape=Region, size=LifeExp))
+p + geom_point(aes(col=Region), size=3)
+######
+p <- ggplot(Ldata, aes(GDP/10,LifeExp)) + scale_x_log10()
+p +p + geom_point() + geom_smooth(lwd=2, se=FALSE,
+                                  method="lm", col="red") geom_point() + geom_smooth()
+p + geom_point(aes(color = Region)) + geom_smooth()
+###
++ aes(color = Region) + geom_point() + geom_smooth()
+p + aes(color = Region) + geom_point() + geom_smooth(se=F, lwd=2)
+###
+p + geom_point()
+ggsave(file="myplot.png")
+pfinal <- p + geom_point() + geom_smooth() + facet_wrap(~Region, ncol=1)
+ggsave(pfinal, file="myplot.pdf", width=5, height=15)
+#########clear console############################
+# Clear environment
+rm(list = ls())
+# Clear console
+cat("\014")# ctrl+L
+#Clear plot
+dev.off()    # Close plots ######################
